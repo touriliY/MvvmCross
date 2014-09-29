@@ -23,13 +23,13 @@ namespace Cirrious.MvvmCross.Droid.Fragging.Fragments
             }
         }
 
-        public static void EnsureBindingContextIsSet(this IMvxFragmentView fragment, LayoutInflater inflater)
+    public static void EnsureBindingContextIsSet(this IMvxFragmentView fragment, Context context, LayoutInflater inflater)
         {
             var actualFragment = (Fragment) fragment;
 
             if (fragment.BindingContext == null)
             {
-                fragment.BindingContext = new MvxAndroidBindingContext(actualFragment.Activity,
+                fragment.BindingContext = new MvxAndroidBindingContext(context,
                                                                 new MvxSimpleLayoutInflater(inflater),
                                                                 fragment.DataContext);
             }
@@ -39,6 +39,13 @@ namespace Cirrious.MvvmCross.Droid.Fragging.Fragments
                 if (androidContext != null)
                     androidContext.LayoutInflater = new MvxSimpleLayoutInflater(inflater);
             }
+        }
+        
+        public static void EnsureBindingContextIsSet(this IMvxFragmentView fragment, LayoutInflater inflater)
+        {
+            
+            var actualFragment = (Fragment) fragment;
+            fragment.EnsureBindingContextIsSet(actualFragment.Activity, inflater);
         }
 
         public static void EnsureBindingContextIsSet(this IMvxFragmentView fragment, Bundle b0)
